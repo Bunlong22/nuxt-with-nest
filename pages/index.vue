@@ -116,22 +116,26 @@ export default {
       this.products = data;
     },
     async addProduct() {
-      const response = await fetch("http://localhost:3000/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(this.product),
-      });
-      if (response.ok) {
-        await this.fetchProducts();
-        this.product = {
-          title: "",
-          description: "",
-          price: 0,
-        };
-      } else {
-        console.error("Failed to add product.");
-      }
-    },
+  if (this.product.title && this.product.description && this.product.price) { //resolve the cancel function error, when click on cancel it add an empty array of object
+    const response = await fetch("http://localhost:3000/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.product),
+    });
+    if (response.ok) {
+      await this.fetchProducts();
+      this.product = {
+        title: "",
+        description: "",
+        price: 0,
+      };
+    } else {
+      console.error("Failed to add product.");
+    }
+  } else {
+    console.log("Please enter all product details.");
+  }
+},
     async deleteProduct(productId) {
       const response = await fetch(
         `http://localhost:3000/products/${productId}`,
@@ -152,14 +156,9 @@ export default {
       this.updatedProduct = { ...product };
     },
     cancelUpdate() {
-      this.isEditMode = false;
-      this.updatedProduct = {
-        id: "",
-        title: "",
-        description: "",
-        price: 0,
-      };
-    },
+  this.isEditMode = false;
+  this.updatedProduct = {}; // Reset to an empty object
+},
     async updateProduct() {
       const response = await fetch(
         `http://localhost:3000/products/${this.updatedProduct.id}`,
@@ -178,7 +177,7 @@ export default {
           description: "",
           price: 0,
         };
-        alert("The product has been successfully updated")
+        alert("The product has been successfully updated");
       } else {
         alert("Failed to update product.");
       }
