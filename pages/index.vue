@@ -178,8 +178,9 @@ export default {
           description: "",
           price: 0,
         };
+        alert("The product has been successfully updated")
       } else {
-        console.error("Failed to update product.");
+        alert("Failed to update product.");
       }
     },
   },
